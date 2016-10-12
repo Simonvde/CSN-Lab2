@@ -266,7 +266,7 @@ p_geom <- function(k) dgeom(k,prob)
 plot(table(x)/length(x),xlim=c(0,27))
 curve(p_zeta,add=T,col='red',lty=2)
 curve(p_poisson,add = T,col='blue')
-curve(p_geom,add = T,col='green')
+points(1:27,p_geom(1:27),add = T,col='green')
 curve(p_RT_zeta,add = T,col='yellow',lty=2,lwd=3)
 
 plot(table(x)/length(x),xlim=c(100,200))
