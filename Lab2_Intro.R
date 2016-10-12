@@ -240,6 +240,41 @@ RSS(3000,p_RT_zeta)
 RSS(150,p_poisson) #k! is to large to compute values >170. But we already have converge for RSS at 50.
 
 
+# test --------------------------------------------------------------------
+N <- length(x)
+H_special <- function(gamma_s,q) sum((1:max(x)+q)^(-gamma_s))
+
+minus_log_likelihood_RT_zeta_special <- function(gamma_s,q) {
+  gamma_s*sum(log(x+q))+N*log(H_special(gamma_s,q))
+}
+
+mle_RT_zeta_s <- mle(minus_log_likelihood_RT_zeta_special,
+                     start = list(gamma_s = 2,q=0),
+                     method = "L-BFGS-B",
+                     lower=c(1.0001,0))
+att_rt_z_s <- attributes(summary(mle_RT_zeta_s))
+get_AIC(att_rt_z_s$m2logL, 2, N)
+
+gamma_rt_s <- att_rt_z_s$coef[1]
+q <- att_rt_z_s$coef[2]
+
+p_RT_zeta_special <- function(k) ((k+q)^(-gamma_rt_s))/(H_special(gamma_rt_s,q))
+
+
+for(i in seq(max(x),0,by=-1000)){
+  print(i)
+  mle_RT_zeta <- mle(minus_log_likelihood_RT_zeta,
+                     start = list(k_max=i,gamma = 2),
+                     method = "CG")
+  att_rt_z <- attributes(summary(mle_RT_zeta))$coef
+  k_max <- att_rt_z[[1]]
+  gamma_rt <- att_rt_z[[2]]
+  H <- function(k_max,gamma) sum((1:k_max)^(-gamma))
+  p_RT_zeta <- function(k) k^(-gamma_rt)/(H(k_max,gamma_rt))
+  tryCatch(RSS(500,p_RT_zeta), error = function() break) 
+  print("t")
+}
+
 
 
 # Graphical ---------------------------------------------------------------
@@ -263,11 +298,13 @@ p_poisson <- function(k) lambda^k*exp(-lambda)/(factorial(k)*(1-exp(-lambda)))
 prob<-pars[4]
 p_geom <- function(k) dgeom(k,prob)
 
+pdf(file="images//Example_image.pdf")
 plot(table(x)/length(x),xlim=c(0,27))
 curve(p_zeta,add=T,col='red',lty=2)
 curve(p_poisson,add = T,col='blue')
 points(1:27,p_geom(1:27),add = T,col='green')
 curve(p_RT_zeta,add = T,col='yellow',lty=2,lwd=3)
+dev.off()
 
 plot(table(x)/length(x),xlim=c(100,200))
 
