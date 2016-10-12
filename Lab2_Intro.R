@@ -236,3 +236,6 @@ RSS(3000,p_zeta)
 RSS(3000,p_RT_zeta)
 RSS(150,p_poisson) #k! is to large to compute values >170. But we already have converge for RSS at 50.
 
+
+cds
+csd
