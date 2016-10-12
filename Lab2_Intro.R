@@ -12,7 +12,7 @@ library("stats4")
 # Set a seed so random results will be the same when file is executed again.
 set.seed(1)
 
-degree_sequence = read.table("./data/English_in-degree_sequence.txt",
+degree_sequence <- read.table("./data/English_in-degree_sequence.txt",
                              header = FALSE)
 
 degree_sequence=read.table("./samples_from_discrete_distributions/data/sample_of_zeta_with_parameter_2.5.txt",header = FALSE)
@@ -107,12 +107,12 @@ mle_poisson <- mle(minus_log_likelihood_poisson,
 
 # Test on sample data -----------------------------------------------------
 get_AIC <- function(m2logL,K,N) {
-  print(c(m2logL,2*K*N/(N-K-1)))
+  #print(c(m2logL,2*K*N/(N-K-1)))
   m2logL + 2*K*N/(N-K-1) # AIC with a correction for sample size
 }
 
 x <- degree_sequence$V1
-AICs <- function(x){
+AICs <- function(x,graph_=F){
   
   N <- length(x)
   M <- sum(x)
@@ -167,6 +167,9 @@ AICs <- function(x){
                     att_rt_z$coef[2,1],
                     att_geom$coef[1],
                     att_pois$coef[1])
+  if(graph_){
+    return (coefficients)
+  }
   return (aics-min(aics))
 }
 
@@ -200,7 +203,7 @@ mle_poisson <- mle(minus_log_likelihood_poisson,
                                 lower = c(0.00001))
 att_poisson <- attributes(summary(mle_poisson))
 lambda <- att_poisson$coef[1,1]
-p_poisson <- function(k) lambda^k*exp(lambda)/factorial(k)
+p_poisson <- function(k) lambda^k*exp(-lambda)/(factorial(k)*(1-exp(-lambda)))
 
 
 s <- sum(degree_sequence)
@@ -237,5 +240,37 @@ RSS(3000,p_RT_zeta)
 RSS(150,p_poisson) #k! is to large to compute values >170. But we already have converge for RSS at 50.
 
 
-cds
-csd
+
+
+# Graphical ---------------------------------------------------------------
+
+#Zeta
+
+
+plot(table(x)/length(x),xlim=c(-14,14))
+curve(p_zeta,add=T,col='red')
+
+#All models
+pars<-AICs(x,T)
+gamma<-pars[1]
+p_zeta <- function(k) k^(-gamma)/zeta(gamma)
+k_max<-pars[2]
+gamma_rt<-pars[3]
+H <- function(k_max,gamma) sum((1:k_max)^(-gamma))
+p_RT_zeta <- function(k) k^(-gamma_rt)/(H(k_max,gamma_rt))
+lambda<-pars[5]
+p_poisson <- function(k) lambda^k*exp(-lambda)/(factorial(k)*(1-exp(-lambda)))
+prob<-pars[4]
+p_geom <- function(k) dgeom(k,prob)
+
+plot(table(x)/length(x),xlim=c(0,27))
+curve(p_zeta,add=T,col='red',lty=2)
+curve(p_poisson,add = T,col='blue')
+curve(p_geom,add = T,col='green')
+curve(p_RT_zeta,add = T,col='yellow',lty=2,lwd=3)
+
+plot(table(x)/length(x),xlim=c(100,200))
+
+p_zeta(100)
+p_RT_zeta(10000)
+curve(dgeom)
