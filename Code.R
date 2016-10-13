@@ -176,7 +176,6 @@ plots <- function(language, file){
   prob_1 <- pars[6]
   p_geom_corrected <- function(k) dgeom(k-1,prob_1)
   
-  png(file=paste('images//',language,'.png',sep=''),bg = NA)
   plot(table(x)/length(x),xlim=c(0,27),ylim=c(0,max((table(x)/length(x))[1],p_geom_corrected(1))),ylab='',xlab='Degree')
   curve(p_zeta,xlim=c(1,27),add=T,col='red',lty=2)
   curve(p_poisson,xlim=c(1,27),add = T,col='blue')
@@ -185,11 +184,24 @@ plots <- function(language, file){
   curve(p_RT_zeta,xlim=c(1,27),add = T,col='yellow',lty=2,lwd=3)
   legend(9,0.5,legend = c('Observe degree frequency','Zeta','Right Trunc. Zeta ','Geometric','Geometric from 1','Poisson'),col = c('black','red','yellow','green','brown','blue'),lty = c(1,2,2,NA,NA,1),pch = c(NA,NA,NA,15,15,NA))
   title(language)
-  dev.off()
-}
+  }
 
 for (i in 1:nrow(source)) aic_diff[i,] <- write_AICs(source$language[i], source$file[i])
 for (i in 1:nrow(source)) rss[i,] <- write_RSS(source$language[i], source$file[i])
+
+png(file='images//General_1.png')
+par(mfrow=c(2,2))
+for (i in 1:4) plots(source$language[i], source$file[i])
+dev.off()
+png(file='images//General_2.png')
+par(mfrow=c(2,2))
+for (i in 5:8) plots(source$language[i], source$file[i])
+dev.off()
+png(file='images//General_3.png')
+par(mfrow=c(1,2))
+for (i in 9:nrow(source)) plots(source$language[i], source$file[i])
+dev.off()
+
 for (i in 1:nrow(source)) plots(source$language[i], source$file[i])
 
 dimnames(aic_diff) <- list(source$language, c("zeta","zeta_2","RT_zeta","geom","poisson",'geom_corrected'))
@@ -313,17 +325,16 @@ dimnames(aic_diff) <- list(source$language, c("zeta","zeta_2","RT_zeta","geom","
 
 # Output ------------------------------------------------------------------
 
+
 plots <- function(language, file){
   x=read.table(file, header = FALSE)$V1
   pars<-AICs_Alt(x,T)
   gamma_delta <- pars[7:8]
   altm_func_c <- function(k) {altm_func(gamma_delta[1],gamma_delta[2],k)}
-  
-  png(file=paste('images//',language,'_Altman.png',sep=''),bg = NA)
   plot(table(x)/length(x),xlim=c(0,27),ylim=c(0,(table(x)/length(x))[1]),ylab='',xlab='Degree')
   curve(altm_func_c,xlim=c(1,27),add=T,col='red',lty=2)
   title(paste(language, 'Altmann'))
-  dev.off()
+  
 }
 
 
@@ -333,6 +344,19 @@ write_AICs <- function(language,file) {
 }
 
 for (i in 1:nrow(source)) aic_diff[i,] <- write_AICs(source$language[i], source$file[i])
-for (i in 1:nrow(source)) plots(source$language[i], source$file[i])
+
+png(file='images//Altman_1.png')
+par(mfrow=c(2,2))
+for (i in 1:4) plots(source$language[i], source$file[i])
+dev.off()
+png(file='images//Altman_2.png')
+par(mfrow=c(2,2))
+for (i in 5:8) plots(source$language[i], source$file[i])
+dev.off()
+png(file='images//Altman_3.png')
+par(mfrow=c(1,2))
+for (i in 9:nrow(source)) plots(source$language[i], source$file[i])
+dev.off()
+
 
 xtable(aic_diff)
