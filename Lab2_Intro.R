@@ -276,13 +276,36 @@ for(i in seq(max(x),0,by=-1000)){
 }
 
 
+# Altmann -----------------------------------------------------------------
+
+altm_func <- function(gamma,delta,k){
+  return(((sum((1:N)^(-gamma)*exp(-delta*(1:N))))^(-1))*k^(-gamma)*exp(-delta*k))
+}
+
+altm_func=Vectorize(altm_func,vectorize.args = c('delta','gamma'))
+
+mle_log_altm <- function(par){
+  -sum(-N*log(sum((1:N)^(-par[1])*exp(-(1:N)*par[2]))) + sum(log(x^(-par[1]))) + sum(-x*par[2]) ) 
+}
+
+mle(mle_log_altm,start = list(par=c(0,0)))
+
+
+install.packages('optimix')
+
+gamma_delta=optim(c(1,1),mle_log_altm,lower = c(0,0), upper = c(1,1),method = 'L-BFGS-B')$par
+
+plot(altm_func(gamma,delta,(1:1000)/2000))
+plot(1:10,altm_func(gamma,delta,(1:10)))
+
+
 
 # Graphical ---------------------------------------------------------------
 
 #Zeta
 
 
-plot(table(x)/length(x),xlim=c(-14,14))
+plot(table(x)/length(x),xlim=c(1,14))
 curve(p_zeta,add=T,col='red')
 
 #All models
