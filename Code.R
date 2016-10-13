@@ -208,8 +208,7 @@ par(mfrow=c(2,1))
 for (i in 7:8) plots(source$language[i], source$file[i])
 dev.off()
 png(file='images//General_5.png')
-par(mfrow=c(2,1),)
-?par
+par(mfrow=c(2,1))
 for (i in 9:10) plots(source$language[i], source$file[i])
 dev.off()
 
@@ -342,7 +341,7 @@ plots <- function(language, file){
   pars<-AICs_Alt(x,T)
   gamma_delta <- pars[7:8]
   altm_func_c <- function(k) {altm_func(gamma_delta[1],gamma_delta[2],k)}
-  plot(table(x)/length(x),xlim=c(0,27),ylim=c(0,(table(x)/length(x))[1]),ylab='',xlab='Degree')
+  plot(table(x)/length(x),xlim=c(0,27),ylim=c(0,(table(x)/length(x))[1]),ylab='Probability degree',xlab='Degree')
   curve(altm_func_c,xlim=c(1,27),add=T,col='red',lty=2)
   title(paste(language, 'Altmann'))
   
@@ -378,4 +377,4 @@ par(mfrow=c(2,1))
 for (i in 9:10) plots(source$language[i], source$file[i])
 dev.off()
 
-xtable(aic_diff)
+xtable(aic_diff,display=rep("d",8))

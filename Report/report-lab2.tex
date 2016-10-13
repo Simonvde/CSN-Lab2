@@ -52,6 +52,9 @@
 \usepackage{topcapt}
 \usepackage{booktabs}
 
+\usepackage{float}
+\restylefloat{table}
+
 \usepackage{graphicx}
 \graphicspath{{../images/}}
 
@@ -98,17 +101,18 @@ We considered $5$ theoretical models and used the Akaike information criterions 
 
 After choosing the statistically best models, we plotted our models to our data to do a visual check of correctness.
 
-And finally recompute the Akaike scores, introducing a better model: Altmann distribution.
+And finally recompute the Akaike scores, introducing a better model: the Altmann distribution.
 
 %----------------------------------------------------------------------------------------
 %	RESULTS
 %----------------------------------------------------------------------------------------
 \section{Results}
 
-In table~\ref{diffAIC} we find our main result, the difference in AIC from the best (of the $5$) model. We notice that except for Hungarian and Turkish the right-truncated zeta always ends up best.
+In table~\ref{diffAIC} we find our main result, the difference in AIC from the best (of the $5$) model. We notice that except for Hungarian and Turkish the right-truncated zeta always ends up best.\\
+
 % latex table generated in R 3.1.2 by xtable 1.7-4 package
 % Wed Oct 12 18:23:23 2016
-\begin{table}[htbp]
+\begin{table}[h!!!]
 \centering
 \topcaption{Difference in AIC for the $5$ different models in different languages} \label{diffAIC}
 \begin{tabular}{rrrrrr}
@@ -157,98 +161,102 @@ Arabic & 9.54e-04 & 9.33e-04 \\
 
 % latex table generated in R 3.3.1 by xtable 1.8-2 package
 % Thu Oct 13 19:43:22 2016
-In table~\ref{diffAIC_A}, as we expected Altmann function has the best score, so all the other values are shifted of the difference between the previous best model score and the Altmann score.
+In table~\ref{diffAIC_A} we added two more models, the Altmann model and a corrected geometric model (see also Method section). As we expected has the Altmann function best score, so all the other values are shifted of the difference between the previous best model score and the Altmann score.
 
-\begin{table}[ht]
+% latex table generated in R 3.1.2 by xtable 1.7-4 package
+% Thu Oct 13 23:20:49 2016
+\begin{table}[H]
 \centering
-\topcaption{Difference in AIC for the $5$ different models in different languages} \label{diffAIC_A}
+\topcaption{Difference in AIC for the $5$ different models + 2 extra models in different languages} \label{diffAIC_A}
 \begin{tabular}{rrrrrrrr}
   \hline
  & zeta & zeta\_2 & RT\_zeta & geom & poisson & geom\_corrected & Altmann \\ 
   \hline
-Arabic & 132092.50 & 132264.87 & 132089.59 & 156278.54 & 372410.85 & 137774.84 & 0.00 \\ 
-  Basque & 58151.24 & 58996.42 & 58151.01 & 66515.12 & 108315.60 & 42796.94 & 0.00 \\ 
-  Catalan & 271389.13 & 271601.08 & 271375.18 & 333256.91 & 1185255.26 & 318171.69 & 0.00 \\ 
-  Chinese & 277583.60 & 278072.90 & 277568.91 & 326247.73 & 895917.31 & 309159.19 & 0.00 \\ 
-  Czech & 439807.88 & 439946.31 & 439799.03 & 530898.42 & 1380476.74 & 485598.28 & 0.00 \\ 
-  English & 251394.54 & 252819.15 & 251349.49 & 297091.67 & 990930.96 & 287081.79 & 0.00 \\ 
-  Greek & 78708.62 & 78869.30 & 78705.19 & 95839.03 & 235842.43 & 85490.72 & 0.00 \\ 
-  Hungarian & 185034.54 & 187254.82 & 185036.24 & 238504.16 & 653286.73 & 204135.21 & 0.00 \\ 
-  Italian & 86617.65 & 86735.54 & 86617.17 & 109495.06 & 332420.68 & 101040.66 & 0.00 \\ 
-  Turkish & 91486.62 & 94227.09 & 91488.60 & 116101.97 & 284831.65 & 80961.78 & 0.00 \\ 
+Arabic & 132092 & 132264 & 132089 & 156278 & 372410 & 137774 &   0 \\ 
+  Basque & 58151 & 58996 & 58151 & 66515 & 108315 & 42796 &   0 \\ 
+  Catalan & 271389 & 271601 & 271375 & 333256 & 1185255 & 318171 &   0 \\ 
+  Chinese & 277583 & 278072 & 277568 & 326247 & 895917 & 309159 &   0 \\ 
+  Czech & 439807 & 439946 & 439799 & 530898 & 1380476 & 485598 &   0 \\ 
+  English & 251394 & 252819 & 251349 & 297091 & 990930 & 287081 &   0 \\ 
+  Greek & 78708 & 78869 & 78705 & 95839 & 235842 & 85490 &   0 \\ 
+  Hungarian & 185034 & 187254 & 185036 & 238504 & 653286 & 204135 &   0 \\ 
+  Italian & 86617 & 86735 & 86617 & 109495 & 332420 & 101040 &   0 \\ 
+  Turkish & 91486 & 94227 & 91488 & 116101 & 284831 & 80961 &   0 \\ 
    \hline
 \end{tabular}
 \end{table}
+
+Hereafter we added a plot for every language, plotting the fit of some distributions on the data.
 
 
 %Example Image
 \begin{figure}[!htbp] %  figure placement: here, top, bottom, or page
    \centering
-   \includegraphics[width=15cm,height=27cm]{General_1} %width can also be 2in, 3.5in, .5\textwidth?
+   \includegraphics[width=\textwidth]{General_1} %width can also be 2in, 3.5in, .5\textwidth?
   
 \end{figure}
 
 %Example Image
 \begin{figure}[htbp] %  figure placement: here, top, bottom, or page
    \centering
-   \includegraphics[width=15cm,height=27cm]{General_2} %width can also be 2in, 3.5in, .5\textwidth?
+   \includegraphics[width=\textwidth]{General_2} %width can also be 2in, 3.5in, .5\textwidth?
 
 \end{figure}
 
 %Example Image
 \begin{figure}[htbp] %  figure placement: here, top, bottom, or page
    \centering
-   \includegraphics[width=15cm,height=27cm]{General_3} %width can also be 2in, 3.5in, .5\textwidth?
+   \includegraphics[width=\textwidth]{General_3} %width can also be 2in, 3.5in, .5\textwidth?
 \end{figure}
 
 %Example Image
 \begin{figure}[htbp] %  figure placement: here, top, bottom, or page
    \centering
-   \includegraphics[width=15cm,height=27cm]{General_4} %width can also be 2in, 3.5in, .5\textwidth?
+   \includegraphics[width=\textwidth]{General_4} %width can also be 2in, 3.5in, .5\textwidth?
 \end{figure}
 
 %Example Image
 \begin{figure}[htbp] %  figure placement: here, top, bottom, or page
    \centering
-   \includegraphics[width=15cm,height=27cm]{General_5} %width can also be 2in, 3.5in, .5\textwidth?
-   \caption{Model Comparison}
+   \includegraphics[width=\textwidth]{General_5} %width can also be 2in, 3.5in, .5\textwidth?
+\end{figure}
+
+And we also added some extra plots regarding the Altmann distribution.
+
+%Example Image
+\begin{figure}[htbp] %  figure placement: here, top, bottom, or page
+   \centering
+   \includegraphics[width=\textwidth]{Altman_1} %width can also be 2in, 3.5in, .5\textwidth?
+\end{figure}
+
+%Example Image
+\begin{figure}[htbp] %  figure placement: here, top, bottom, or page
+   \centering
+   \includegraphics[width=\textwidth]{Altman_2} %width can also be 2in, 3.5in, .5\textwidth?
+\end{figure}
+
+%Example Image
+\begin{figure}[htbp] %  figure placement: here, top, bottom, or page
+   \centering
+   \includegraphics[width=\textwidth]{Altman_3} %width can also be 2in, 3.5in, .5\textwidth?
+\end{figure}
+
+%Example Image
+\begin{figure}[htbp] %  figure placement: here, top, bottom, or page
+   \centering
+   \includegraphics[width=\textwidth]{Altman_4} %width can also be 2in, 3.5in, .5\textwidth?
    \label{fig:example}
-
 \end{figure}
 
 %Example Image
 \begin{figure}[htbp] %  figure placement: here, top, bottom, or page
    \centering
-   \includegraphics[width=15cm,height=27cm]{Altman_1} %width can also be 2in, 3.5in, .5\textwidth?
-\end{figure}
-
-%Example Image
-\begin{figure}[htbp] %  figure placement: here, top, bottom, or page
-   \centering
-   \includegraphics[width=15cm,height=27cm]{Altman_2} %width can also be 2in, 3.5in, .5\textwidth?
-\end{figure}
-
-%Example Image
-\begin{figure}[htbp] %  figure placement: here, top, bottom, or page
-   \centering
-   \includegraphics[width=15cm,height=27cm]{Altman_3} %width can also be 2in, 3.5in, .5\textwidth?
-\end{figure}
-
-%Example Image
-\begin{figure}[htbp] %  figure placement: here, top, bottom, or page
-   \centering
-   \includegraphics[width=15cm,height=27cm]{Altman_4} %width can also be 2in, 3.5in, .5\textwidth?
+   \includegraphics[width=\textwidth]{Altman_5} %width can also be 2in, 3.5in, .5\textwidth?
    \caption{example caption}
    \label{fig:example}
 \end{figure}
 
-%Example Image
-\begin{figure}[htbp] %  figure placement: here, top, bottom, or page
-   \centering
-   \includegraphics[width=15cm,height=27cm]{Altman_5} %width can also be 2in, 3.5in, .5\textwidth?
-   \caption{example caption}
-   \label{fig:example}
-\end{figure}
+
 
 
 \newpage
@@ -259,16 +267,23 @@ Arabic & 132092.50 & 132264.87 & 132089.59 & 156278.54 & 372410.85 & 137774.84 &
 \section{Discussion}
 When optimising model $3$ we noticed that the value of $k_{max}$ stays its starting value and does not change, while manually changing the starting value of $k_{max}$ and thus the value obtained by optimising, significantly improved the AIC-value and the RSS-value. For the english-in-degree-sequence reduces changing $k_{max}$ manually from max degree to $778$ the RSS by over $30\%$.
 
+On the plots we see that the Altmann distribution and the (right-truncated)-zeta distribution fit the probabilities from the data well. We prefer the Altmann distribution over the the zeta-distributions because the Altmann distribution has a lower AIC.
+
 \subsection{Conclusion}
-Best model it's the Altmann one, the zeta function respects to the previous works better because behave good on the tails, the geometric distribution, even if shifted to 1, it 'loose' too much probability on the tails!
-Finally as was expected, the AIC has changed as soon as you introduce a better model.
+The best model is the Altmann model, the zeta function with respect to the previous functions works better because it behaves good on the tails, the geometric distribution, even if shifted to 1, 'loses' too much probability on the tails.
+Finally as was expected, the difference in AIC has changed as soon as you introduce a better model.\\
+
+Because the Altmann distribution also gives a reasonable fit on the plot, we think that using the altmann distribution is an appropriate way to model the data.
+
 %----------------------------------------------------------------------------------------
 %	METHODS
 %----------------------------------------------------------------------------------------
 \section{Methods}
 When using the ``L-BFGS-B'' optimisation method for the right truncated zeta model (model $3$), we often encountered errors. We decided to change the optimisation method to the conjugate gradients method ``CG''. Here we couldn't set any lower bound, but that didn't seem to give any problem for our data.\\
 
+We noticed our geometric distribution gave a weight to the value $0$. So we decided to make a corrected geometric distribution, by shifting the data for this distribution by $1$. We called this distribution geom\_corrected.\\
 
+Calculating the mle-function for the Altmann distribution didn't really work out either. So we calculated the optimised parameters 'manually' with the optim-function, which is used inside the mle-function.
 
 
 
